@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3005;
 
 app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
 app.use(express.json());
@@ -31,7 +31,7 @@ app.post("/api/chat", async (req, res) => {
   // Gemini doesn't have a dedicated system field in the REST API —
   // we prepend the system prompt as the first user turn + model ack.
   const systemTurns = [
-    { role: "user",  parts: [{ text: `[SYSTEM INSTRUCTIONS]\n${system}` }] },
+    { role: "user", parts: [{ text: `[SYSTEM INSTRUCTIONS]\n${system}` }] },
     { role: "model", parts: [{ text: "Understood. I'll follow those instructions." }] },
   ];
 
@@ -43,7 +43,7 @@ app.post("/api/chat", async (req, res) => {
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${process.env.GEMINI_API_KEY}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
